@@ -3,6 +3,7 @@ import "./style.css";
 let score = 0;
 
 const boardDom = document.getElementById("game-grid");
+const scoreDom = document.getElementById("game-current-score");
 
 const candyColors = ["red", "yellow", "orange", "purple", "green", "blue"];
 
@@ -121,7 +122,8 @@ const checkRowForMatchForThree = () => {
           cells[index].style.backgroundColor === decidedColor && !isBlank
       )
     ) {
-      score += 3;
+      score += 50;
+      updateCurrentScore(score);
       rowOfThree.map((index) => {
         cells[index].style.backgroundColor = "";
       });
@@ -145,7 +147,8 @@ const checkColumnForMatchForThree = () => {
           cells[index].style.backgroundColor === decidedColor && !isBlank
       )
     ) {
-      score += 3;
+      score += 50;
+      updateCurrentScore(score);
       columnOfThree.map((index) => {
         cells[index].style.backgroundColor = "";
       });
@@ -153,8 +156,21 @@ const checkColumnForMatchForThree = () => {
   }
 };
 
+const updateCurrentScore = (score: number) => {
+  if (scoreDom) scoreDom.textContent = score.toString();
+};
+
 const refillEmptyCells = () => {
-  console.log("refilling");
+  let havePopulatedCell = false;
+
+  checkRowForMatchForThree();
+  checkColumnForMatchForThree();
+
+  for (let i = 0; i < boardSize; i++) {
+    if (cells[i].style.backgroundColor.length === 0) {
+      cells[i].style.backgroundColor = getRandomColor();
+    }
+  }
 
   for (let i = 0; i < boardSize ** 2 - boardSize; i++) {
     if (cells[i + boardSize].style.backgroundColor.length === 0) {
@@ -162,20 +178,18 @@ const refillEmptyCells = () => {
         cells[i].style.backgroundColor;
       cells[i].style.backgroundColor = "";
 
-      // Generate new cells for empty cell on the first row
-      for (let i = 0; i < boardSize; i++) {
-        if (cells[i].style.backgroundColor.length === 0) {
-          cells[i].style.backgroundColor = getRandomColor();
-        }
-      }
+      if (!havePopulatedCell) havePopulatedCell = true;
     }
   }
+
+  if (havePopulatedCell) refillEmptyCells();
 };
 
-window.setInterval(refillEmptyCells, 100);
+// window.setInterval(refillEmptyCells, 1000);
 
+updateCurrentScore(score);
 createBoard();
 mountEvents();
 checkRowForMatchForThree();
 checkColumnForMatchForThree();
-// refillEmptyCells();
+refillEmptyCells();
