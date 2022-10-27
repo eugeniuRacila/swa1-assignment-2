@@ -1,3 +1,19 @@
+body,
+html {
+  height: 100vh;
+}
+
+body {
+  display: grid;
+  margin: 0;
+  place-self: center;
+}
+
+#app {
+  display: grid;
+  place-self: center;
+}
+
 .game-grid {
   display: grid;
   gap: 8px;
