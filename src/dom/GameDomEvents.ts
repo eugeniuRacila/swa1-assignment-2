@@ -54,6 +54,7 @@ export default class GameDomEvents {
   }
 
   private static _checkRowMatches(board: Board) {
+    let tileDom: HTMLDivElement | null;
     let currentColor = "";
     let matchCounter = 1;
     let whileCounter = 0;
@@ -76,6 +77,14 @@ export default class GameDomEvents {
             `Match found on row: ${row}, starting at index: ${tileIndex} and consists of ${matchCounter} matches.`
           );
 
+          for (let i = tileIndex; i < whileCounter; i++) {
+            tileDom = document.getElementById(
+              `game-tile-${i}-${row}`
+            ) as HTMLDivElement;
+
+            if (tileDom) tileDom.style.backgroundColor = "";
+          }
+
           tileIndex = whileCounter;
         }
 
@@ -86,6 +95,7 @@ export default class GameDomEvents {
   }
 
   private static _checkColMatches(board: Board) {
+    let tileDom: HTMLDivElement | null;
     let currentColor = "";
     let matchCounter = 1;
     let whileCounter = 0;
@@ -107,6 +117,14 @@ export default class GameDomEvents {
           console.log(
             `Match found on col: ${col}, starting at index: ${tileIndex} and consists of ${matchCounter} matches.`
           );
+
+          for (let i = tileIndex; i < whileCounter; i++) {
+            tileDom = document.getElementById(
+              `game-tile-${col}-${i}`
+            ) as HTMLDivElement;
+
+            if (tileDom) tileDom.style.backgroundColor = "";
+          }
 
           tileIndex = whileCounter;
         }
